@@ -20,6 +20,9 @@ public class MyPApplet extends PApplet{
 		background(255);			//set canvas color
 		stroke(0);				//set pen color
 		img = loadImage("palmTrees.jpg", "jpg");
+		img.resize(0, height);
+		image(img, 0, 0);
+		
 	}
 	
 	public void draw() {

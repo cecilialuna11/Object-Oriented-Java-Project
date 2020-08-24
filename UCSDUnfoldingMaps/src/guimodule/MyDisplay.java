@@ -1,0 +1,24 @@
+package guimodule;
+
+import processing.core.PApplet;
+
+public class MyDisplay extends PApplet {
+	
+	public void setup() 
+	{
+		
+		size(400, 400);
+		background(255, 255,255);
+	}
+	
+	public void draw() 
+	{
+		
+	}
+
+//	public static void main(String[] args) {
+//		
+//
+//	}
+
+}
