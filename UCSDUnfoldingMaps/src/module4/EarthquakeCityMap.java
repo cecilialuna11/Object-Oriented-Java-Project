@@ -80,7 +80,7 @@ public class EarthquakeCityMap extends PApplet {
 		//earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
-		//earthquakesURL = "quiz1.atom";
+		earthquakesURL = "quiz1.atom";
 		
 		
 		// (2) Reading in earthquake data and geometric properties
@@ -135,23 +135,63 @@ public class EarthquakeCityMap extends PApplet {
 		// Remember you can use Processing's graphics methods here
 		fill(255, 250, 240);
 		rect(25, 50, 150, 250);
-		
+
 		fill(0);
 		textAlign(LEFT, CENTER);
 		textSize(12);
 		text("Earthquake Key", 50, 75);
-		
-		fill(color(255, 0, 0));
-		ellipse(50, 125, 15, 15);
-		fill(color(255, 255, 0));
-		ellipse(50, 175, 10, 10);
-		fill(color(0, 0, 255));
-		ellipse(50, 225, 5, 5);
-		
+
+		fill(255, 0 , 0); //red
+		//ellipse(50, 125, 15, 15);
+		float x = 50;
+		float y = 100;
+		float side = 10;
+		triangle(x, y, x+(side/2f), y-8.25f, x+side, y);
+
+		fill(255, 255, 255);
+		ellipse(x+(side/2f), y+15, 10, 10);
+
+		//fill(color(255, 255, 255));
+		rect(x, y+30, 10, 10);
+
+		/*
 		fill(0, 0, 0);
 		text("5.0+ Magnitude", 75, 125);
 		text("4.0+ Magnitude", 75, 175);
 		text("Below 4.0", 75, 225);
+		*/
+		fill(0,0,0);
+		textSize(10);
+		text("City Marker", x+20, y-5);
+		text("Land Quake", x+20, y+15);
+		text("Ocean Quake", x+20, y+35);
+
+		textSize(12);
+		text("Size -- Magnitude", 50, y+60);
+
+		fill(252,252,6);
+		ellipse(x+(side/2f), y+85, 10, 10);
+
+		fill(0,0,255);
+		ellipse(x+(side/2f), y+105, 10, 10);
+
+		fill(255, 0, 0);
+		ellipse(x+(side/2f), y+125, 10, 10);
+
+		textSize(10);
+		fill(0, 0, 0);
+		text("Shallow", x+20, y+85);
+		text("Intermediate", x+20, y+105);
+		text("Deep", x+20, y+125);
+
+
+		fill(255, 255, 255);
+		ellipse(x+(side/2f), y+145, 10, 10);
+		line(x-2, y+138, x+12, y+152);
+		line(x+12, y+138, x-2,y+152);
+
+		fill(0, 0, 0);
+		text("Past Day", x+20, y+145);
 	}
 
 	
@@ -170,10 +210,11 @@ public class EarthquakeCityMap extends PApplet {
 		// If isInCountry ever returns true, isLand should return true.
 		for (Marker m : countryMarkers) {
 			// TODO: Finish this method using the helper method isInCountry
+			if (isInCountry(earthquake, m)) {
+				return true;
+			}
 			
 		}
-		
-		
 		// not inside any country
 		return false;
 	}
@@ -186,10 +227,34 @@ public class EarthquakeCityMap extends PApplet {
 	 * */
 	private void printQuakes() 
 	{
+		
 		// TODO: Implement this method
 		// One (inefficient but correct) approach is to:
 		//   Loop over all of the countries, e.g. using 
-		//        for (Marker cm : countryMarkers) { ... }
+		System.out.println("List of countries with 1 or more quakes: ");
+		for (Marker cm : countryMarkers) { 
+			int quakeCount = 0;
+			String name = (String)cm.getProperty("name");
+			for (Marker eq: quakeMarkers) {
+				EarthquakeMarker em = (EarthquakeMarker)eq;
+				if(eq instanceof LandQuakeMarker) {
+					String country = (String)em.getProperty("country");
+					if(name.equalsIgnoreCase(country)) {
+						quakeCount++;
+					}
+				}
+				
+			} 
+			if (quakeCount > 0 ) {
+				System.out.println(name + ": " + quakeCount);
+			}
+		}
+		
+		int oceanCount = 0;
+		for (Marker quake: quakeMarkers) {
+			if( quake instanceof OceanQuakeMarker) oceanCount++;
+			System.out.println( "OCEAN QUAKES: " + oceanCount);
+		}
 		//        
 		//      Inside the loop, first initialize a quake counter.
 		//      Then loop through all of the earthquake
